@@ -1,1 +1,111 @@
 @import "tailwindcss";
+
+body { letter-spacing: 0; }
+
+.nav-link, .persona-link {
+  border: 1px solid #d9ded1;
+  border-radius: 8px;
+  padding: 0.45rem 0.7rem;
+  background: #fff;
+}
+
+.persona-link { background: #eef4e8; color: #27422c; }
+
+.page {
+  margin: 0 auto;
+  max-width: 80rem;
+  padding: 2rem 1.25rem 4rem;
+}
+
+.section-title {
+  font-size: 1.9rem;
+  font-weight: 750;
+  line-height: 1.15;
+}
+
+.subtle { color: #68705f; }
+
+.grid-cards {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.card {
+  border: 1px solid #d9ded1;
+  border-radius: 8px;
+  background: #fff;
+  padding: 1rem;
+}
+
+.metric {
+  border-left: 4px solid #3f6f49;
+  background: #fff;
+  padding: 0.9rem 1rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid #cbd5c0;
+  background: #f5f8f1;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.78rem;
+  font-weight: 650;
+}
+
+.button {
+  display: inline-flex;
+  min-height: 2.35rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #243b2a;
+  color: white;
+  padding: 0.55rem 0.9rem;
+  font-weight: 700;
+}
+
+.button.secondary {
+  border: 1px solid #cbd5c0;
+  background: #fff;
+  color: #243b2a;
+}
+
+input, select, textarea {
+  width: 100%;
+  border: 1px solid #cbd5c0;
+  border-radius: 8px;
+  background: #fff;
+  padding: 0.6rem 0.7rem;
+}
+
+label {
+  display: grid;
+  gap: 0.35rem;
+  color: #3d4439;
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+
+.form-grid {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+th, td {
+  border-bottom: 1px solid #e5e9df;
+  padding: 0.75rem;
+  text-align: left;
+}
+
+th { background: #eef4e8; font-size: 0.82rem; }
