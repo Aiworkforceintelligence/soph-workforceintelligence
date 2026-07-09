@@ -123,6 +123,18 @@ export type LearningModule = {
   is_evergreen: boolean | null;
 };
 
+export type ActionPlan = {
+  id: string;
+  target_persona: string | null;
+  plan_scope: string | null;
+  day30_actions: string[] | null;
+  day60_actions: string[] | null;
+  day90_actions: string[] | null;
+  draft_narrative: string | null;
+  draft_review_status: string | null;
+  approval_status: string | null;
+};
+
 const seedRoles: RoleProfile[] = [
   {
     id: "role-caio",
@@ -220,6 +232,10 @@ const seedModules: LearningModule[] = [
   { id: "module-listening", title: "3 Techniques for Active Listening in AI-Augmented Teams", format: "Bite-sized lesson", duration_minutes: 4, kpi_dimension: "human_empathic_handling", skill_tags: ["active listening", "empathy"], is_evergreen: true },
   { id: "module-5why", title: "Root Cause Analysis: A 5-Why Walkthrough", format: "Scenario challenge", duration_minutes: 8, kpi_dimension: "human_problem_solving", skill_tags: ["critical thinking", "root cause"], is_evergreen: true },
   { id: "module-adapt", title: "Adapting to New AI Tools: A 4-Step Framework", format: "Bite-sized lesson", duration_minutes: 5, kpi_dimension: "human_adaptability", skill_tags: ["change adoption", "AI tools"], is_evergreen: false },
+];
+
+const seedActionPlans: ActionPlan[] = [
+  { id: "action-chro", target_persona: "CHRO", plan_scope: "KPI stagnation and Sarawak hiring", day30_actions: ["Resolve KPI stagnation alert", "Assign adaptability modules", "Validate Sarawak headcount assumptions"], day60_actions: ["Review scorecard velocity", "Approve priority hiring scenario"], day90_actions: ["Report workforce readiness to CEO", "Prepare secure org rollout"], draft_narrative: "CHRO action plan: close Siti Aminah's adaptability gap, fund Sarawak manufacturing AI operations, and keep emerging-role alerts in human review.", draft_review_status: "unreviewed", approval_status: "Pending Approval" },
 ];
 
 function db() {
@@ -320,6 +336,10 @@ export async function getAlerts() {
 
 export async function getLearningModules() {
   return fromDb<LearningModule>("microlearning_modules", seedModules, "title");
+}
+
+export async function getActionPlans() {
+  return fromDb<ActionPlan>("action_plans", seedActionPlans, "created_at");
 }
 
 export function slug(text: string) {
@@ -465,3 +485,14 @@ export async function createActionPlan(form: FormData) {
   revalidatePath("/action-plans");
 }
 
+
+export async function approveActionPlan(form: FormData) {
+  "use server";
+  const id = String(form.get("action_plan_id"));
+  const client = db();
+  if (client) {
+    await client.from("action_plans").update({ approval_status: "Approved", approved_by: "demo_user", approved_at: new Date().toISOString(), calendar_entries_created: true, emails_queued: true }).eq("id", id);
+    await client.from("audit_logs").insert({ actor: "demo_user", action: "approve_action_plan", entity_type: "action_plan", entity_id: id, payload: { approval_status: "Approved", calendar_entries_created: true, emails_queued: true } as Json, risk_level: "High", approval_required: true, approved_by: "demo_user", approved_at: new Date().toISOString() });
+  }
+  revalidatePath("/action-plans");
+}
